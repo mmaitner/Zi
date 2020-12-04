@@ -154,6 +154,12 @@ func Set(item Pair, verbose bool) {
 
 func Del(key string, print bool) {
 	parsed := Init()
+
+	if strings.HasPrefix(key,"^") == true{
+		path:=Get(key,parsed,false)
+		os.Remove(strings.Replace(path,"^","",1))
+
+	}
 	for i := 0; i < len(parsed); i++ {
 		if parsed[i].Key == key {
 			parsed = append(parsed[:i], parsed[i+1:]...)
@@ -168,10 +174,12 @@ func Del(key string, print bool) {
 	for _, item := range parsed {
 		Set(item, false)
 	}
+
 	if print == true {
 		fmt.Println("Query(DELETE): " + key)
 
 	}
+	
 }
 
 func GetAll() string {
